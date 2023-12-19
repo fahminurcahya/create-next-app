@@ -36,7 +36,13 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            docker stop next-app-container || true
-            docker rm next-app-container || true
-            docker load -i /home/ec2-user/next-app-img.tar
-            docker run -d -p 3000:3000 --name next-app-container next-app-img
+            CONTAINER_NAME=next-app-container
+            if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
+                echo "Stopping and removing existing container: ${CONTAINER_NAME}"
+                docker stop ${CONTAINER_NAME}
+                docker rm ${CONTAINER_NAME}
+            else
+                echo "Container '${CONTAINER_NAME}' not found."
+            fi
+            docker load -i /path/on/ec2/next-app-img.tar
+            docker run -d -p 3000:3000 --name ${CONTAINER_NAME} next-app-img
