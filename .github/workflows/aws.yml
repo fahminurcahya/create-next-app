@@ -27,7 +27,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: "."  # Lokasi file Docker image lokal
-          target: "/path/on/ec2"  # Lokasi tujuan di EC2
+          target: "/home/ec2-user"  # Lokasi tujuan di EC2
 
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@master
@@ -38,5 +38,5 @@ jobs:
           script: |
             docker stop next-app-container || true
             docker rm next-app-container || true
-            docker load -i /path/on/ec2/next-app-img.tar
+            docker load -i /home/ec2-user/next-app-img.tar
             docker run -d -p 3000:3000 --name next-app-container next-app-img
