@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: "."  # Update with the correct file name if needed
-          target: "/home/ec2-user/github2"  # Lokasi tujuan di EC2
+          target: "/home/ec2-user/github"  # Lokasi tujuan di EC2
 
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@master
@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            CONTAINER_NAME=next-app-container2
+            CONTAINER_NAME=next-app-container
             if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
                 echo "Stopping and removing existing container: ${CONTAINER_NAME}"
                 docker stop ${CONTAINER_NAME}
@@ -38,5 +38,5 @@ jobs:
                 echo "Container '${CONTAINER_NAME}' not found."
             fi
             # docker rmi next-app-img
-            docker build -t next-app-img2 .
+            docker build -t next-app-img .
             docker run -d -p 3000:3000 --name ${CONTAINER_NAME} next-app-img2
