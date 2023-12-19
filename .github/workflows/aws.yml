@@ -39,4 +39,4 @@ jobs:
             fi
             # docker rmi next-app-img
             docker build -t next-app-img .
-            docker run -d -p 3000:3000 --name ${CONTAINER_NAME} next-app-img2
+            docker run -d -p 3000:3000 --name ${CONTAINER_NAME} next-app-img
