@@ -44,5 +44,5 @@ jobs:
             else
                 echo "Container '${CONTAINER_NAME}' not found."
             fi
-            docker load -i /path/on/ec2/next-app-img.tar
+            docker load -i /home/ec2-user/next-app-img.tar
             docker run -d -p 3000:3000 --name ${CONTAINER_NAME} next-app-img
