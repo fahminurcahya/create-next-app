@@ -16,10 +16,6 @@ jobs:
       - name: Set up Docker
         uses: actions/setup-node@v3
 
-      - name: Build Docker image
-        run: |
-          docker build -t next-app-img .
-
       - name: Copy Docker image to EC2
         uses: appleboy/scp-action@master
         with:
@@ -44,5 +40,6 @@ jobs:
             else
                 echo "Container '${CONTAINER_NAME}' not found."
             fi
-            docker load -i /home/ec2-user/github/next-app-img.tar
+            docker rmi next-app-img
+            docker build -t next-app-img .
             docker run -d -p 3000:3000 --name ${CONTAINER_NAME} next-app-img
